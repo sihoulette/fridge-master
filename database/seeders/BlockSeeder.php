@@ -26,7 +26,8 @@ final class BlockSeeder extends Seeder
             'length' => 2,
             'width' => 1,
             'height' => 1,
-            'volume' => 4,
+            'volume' => 2,
+            'price' => 2,
         ]
     ];
 

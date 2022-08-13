@@ -22,5 +22,6 @@ final class DatabaseSeeder extends Seeder
         $this->call(LocationSeeder::class);
         $this->call(LocationRoomSeeder::class);
         $this->call(LocationRoomBlockSeeder::class);
+        $this->call(OrderSeeder::class);
     }
 }
