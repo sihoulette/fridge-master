@@ -25,10 +25,13 @@ return new class extends Migration
                 ->comment('Width, m.');
             $table->float('height', 4, 2, true)
                 ->default(0.00)
-                ->comment('Height, m');
+                ->comment('Height, m.');
             $table->float('volume', 8, 2, true)
                 ->default(0.00)
-                ->comment('Volume, м3');
+                ->comment('Volume, м3.');
+            $table->float('price', 8, 2, true)
+                ->default(0.00)
+                ->comment('Price, 1pcs.');
             $table->timestamps();
         });
     }

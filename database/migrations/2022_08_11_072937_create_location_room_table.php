@@ -20,9 +20,6 @@ return new class extends Migration
                 ->comment('Location ID');
             $table->string('name')
                 ->comment('Name');
-            $table->float('volume', 8, 2, true)
-                ->default(0.00)
-                ->comment('Volume, м3');
             $table->float('temperature', 4, 2)
                 ->default(0.00)
                 ->comment('Temperature, °C');
