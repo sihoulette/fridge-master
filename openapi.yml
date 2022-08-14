@@ -1,0 +1,302 @@
+openapi: 3.0.3
+info:
+  title: Fridge Master API
+  description: Test API for Fridge Master
+  version: 1.0.0
+  contact:
+    name: Sihoulette
+    email: aleksandr.bytsyk@gmail.com
+servers:
+  - url: http://localhost/api/v1
+    description: Development server
+paths:
+  /location/stat-all:
+    get:
+      tags:
+        - Location state
+      description: All locations state data
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: LocationStateAll
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: True if find locations state data
+                  total_count:
+                    type: integer
+                    description: Locations total count
+                  data:
+                    type: array
+                    description: Data of locations list
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Location ID
+                        name:
+                          type: string
+                          description: Location name
+                        total_blocks:
+                          type: integer
+                          description: Total blocks count in location
+                        free_blocks:
+                          type: integer
+                          description: Free blocks count in location
+  /location/stat-one/{id}:
+    get:
+      tags:
+        - Location state
+      description: One location state data
+      summary: Get location state data by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the location to get
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: LocationStateOne
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: True if have location data
+                  data:
+                    type: object
+                    description: Data of location
+                    properties:
+                      id:
+                        type: integer
+                        description: Location ID
+                      name:
+                        type: string
+                        description: Location name
+                      total_blocks:
+                        type: integer
+                        description: Total blocks count in location
+                      free_blocks:
+                        type: integer
+                        description: Free blocks count in location
+  /order/calc:
+    post:
+      tags:
+        - Order calc
+      description: Order needed blocks count calculation
+      requestBody:
+        description: Form data to calc needed blocks
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                location_id:
+                  type: integer
+                  description: Location ID
+                temperature:
+                  type: integer
+                  description: Temperature for room storage
+                volume:
+                  type: integer
+                  description: Volume size of product
+                beginning_at:
+                  type: string
+                  description: Datetime of begin storage products
+                ending_at:
+                  type: string
+                  description: Datetime of end storage products
+              required:
+                - location_id
+                - temperature
+                - volume
+                - beginning_at
+                - ending_at
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: OrderCalc
+                type: object
+                properties:
+                  location_id:
+                    type: integer
+                    description: Location ID
+                  uses_blocks:
+                    type: integer
+                    description: Uses blocks quantity to store given volume of product
+        422 :
+          description: Validation error response
+          content:
+            application/json:
+              schema:
+                title: OrderCalcErrors
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: General error message
+                  errors:
+                    type: object
+                    description: Detail error messages for attributes
+                    properties:
+                      location_id:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      beginning_at:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      ending_at:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      temperature:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      volume:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+  /order/accept:
+    post:
+      tags:
+        - Order calc
+      description: Accept calculated order to save
+      requestBody:
+        description: Form data to accept order to save
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                location_id:
+                  type: integer
+                  description: Location ID
+                temperature:
+                  type: integer
+                  description: Temperature for room storage
+                volume:
+                  type: integer
+                  description: Volume size of product
+                beginning_at:
+                  type: string
+                  description: Datetime of begin storage products
+                ending_at:
+                  type: string
+                  description: Datetime of end storage products
+                name:
+                  type: string
+                  description: Client first name
+                email:
+                  type: string
+                  description: Client contact email
+              required:
+                - location_id
+                - temperature
+                - volume
+                - beginning_at
+                - ending_at
+                - name
+                - email
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: OrderCalc
+                type: object
+                properties:
+                  location_id:
+                    type: integer
+                    description: Location ID
+                  uses_blocks:
+                    type: integer
+                    description: Uses blocks quantity to store given volume of product
+                  access_code:
+                    type: string
+                    description: Access code for view order detail
+        422:
+          description: Validation error response
+          content:
+            application/json:
+              schema:
+                title: OrderCalcErrors
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: General error message
+                  errors:
+                    type: object
+                    description: Detail error messages for attributes
+                    properties:
+                      location_id:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      beginning_at:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      ending_at:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      temperature:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      volume:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      name:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
+                      email:
+                        type: array
+                        description: Validation rules error messages for attribute
+                        items:
+                          type: string
+                          description: Rule error message
