@@ -27,10 +27,10 @@ paths:
                 properties:
                   success:
                     type: boolean
-                    description: True if find locations state data
+                    description: True if have data
                   total_count:
                     type: integer
-                    description: Locations total count
+                    description: Count items in list
                   data:
                     type: array
                     description: Data of locations list
@@ -227,8 +227,110 @@ paths:
                         $ref: '#/components/schemas/AttributeErrors'
                       email:
                         $ref: '#/components/schemas/AttributeErrors'
+
+  /client/booking/list:
+    get:
+      tags:
+        - Client order booking
+      description: List of client orders
+      parameters:
+        - $ref: '#/components/parameters/QueryOffset'
+        - $ref: '#/components/parameters/QueryLimit'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: OrderDataList
+                description: Data of list client orders
+                properties:
+                  success:
+                    type: boolean
+                    description: True if have data
+                  total_count:
+                    type: integer
+                    description: Count items in list
+                  data:
+                    type: array
+                    description: Data of list orders
+                    items:
+                      $ref: '#/components/schemas/OrderItemClientData'
+  /client/booking/show/{id}:
+    get:
+      tags:
+        - Client order booking
+      description: Show information of order
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the order to get
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: OrderDataItem
+                description: Data of client order item
+                properties:
+                  success:
+                    type: boolean
+                    description: True if have data
+                  data:
+                    $ref: '#/components/schemas/OrderItemClientData'
+  /client/booking/сancel/{id}:
+    patch:
+      tags:
+        - Client order booking
+      description: Сancel order
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the order to cancel
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: CancelOrderItem
+                description: Data of cancel client order item
+                properties:
+                  success:
+                    type: boolean
+                    description: True if success operation
 components:
+  parameters:
+    QueryOffset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+      description: Offset count records in query
+    QueryLimit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+      description: Limit count records in query
   schemas:
+    AttributeErrors:
+      type: array
+      title: AttributeErrors
+      description: Validation rules error messages for attribute
+      items:
+        type: string
+        description: Rule error message
     LocationStateData:
       type: object
       title: LocationStateData
@@ -246,10 +348,37 @@ components:
         free_blocks:
           type: integer
           description: Free blocks count in location
-    AttributeErrors:
-      type: array
-      title: AttributeErrors
-      description: Validation rules error messages for attribute
-      items:
-        type: string
-        description: Rule error message
+    OrderItemClientData:
+      type: object
+      title: OrderItemClientData
+      description: Data of one order item
+      properties:
+        id:
+          type: integer
+          description: Order ID
+        access_code:
+          type: string
+          description: Access code for view order detail
+        location_id:
+          type: integer
+          description: Storage location ID
+        location_name:
+          type: string
+          description: Storage location name
+        temperature:
+          type: number
+          description: Storage room temperature
+        status:
+          type: string
+          description: Order state status
+          enum: [new, reserved, in-delivery, in-storage, out-storage, out-delivery, complete, block, abort]
+          default: "new"
+        beginning_at:
+          type: string
+          description: Datetime of begin storage products
+        ending_at:
+          type: string
+          description: Datetime of end storage products
+        total_price:
+          type: string
+          description: Total price of order
