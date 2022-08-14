@@ -14,11 +14,10 @@ return new class extends Migration
     static protected array $statuses = [
         'new',
         'reserved',
-        'in-process',
+        'in-delivery',
         'in-storage',
-        'out-process',
         'out-storage',
-        'delivery',
+        'out-delivery',
         'complete',
         'block',
         'abort'
@@ -44,6 +43,9 @@ return new class extends Migration
                 ->unsigned()
                 ->nullable()
                 ->comment('User ID');
+            $table->string('access_code')
+                ->unique()
+                ->comment('Access code hash');
             $table->bigInteger('location_id')
                 ->unsigned()
                 ->nullable()

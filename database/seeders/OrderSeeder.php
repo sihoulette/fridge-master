@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * Class OrderSeeder
@@ -47,6 +48,7 @@ final class OrderSeeder extends Seeder
                     ->exists();
                 if ($canFillOrder) {
                     DB::table(self::getTable())->insert([
+                        'access_code' => mb_substr(uniqid(), -12),
                         'location_id' => $location->id,
                         'temperature' => self::$order['temperature'],
                         'volume' => self::$order['volume'],
