@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1 as Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], static function () {
+    // Locations statistic routes
+    Route::group(['prefix' => 'location'], static function () {
+        Route::get('stat-all', [Api\StatLocationController::class, 'all']);
+        Route::get('stat-one/{id}', [Api\StatLocationController::class, 'one']);
+    });
+    // Order process routes
+    Route::group(['prefix' => 'order'], static function () {
+        Route::post('calc', [Api\OrderController::class, 'calc']);
+        Route::post('accept', [Api\OrderController::class, 'accept']);
+    });
 });

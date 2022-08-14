@@ -10,6 +10,11 @@ class Order extends Model
     use HasFactory;
 
     /**
+     * Reserve date range
+     */
+    public const DAYS_RANGE = 20;
+
+    /**
      * The table associated with the model.
      *
      * @var string $table
@@ -23,6 +28,7 @@ class Order extends Model
      */
     protected $fillable = [
         'user_id',
+        'access_code',
         'location_id',
         'temperature',
         'volume',
