@@ -129,35 +129,15 @@ paths:
                     description: Detail error messages for attributes
                     properties:
                       location_id:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       beginning_at:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       ending_at:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       temperature:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       volume:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
   /order/accept:
     post:
       tags:
@@ -234,47 +214,19 @@ paths:
                     description: Detail error messages for attributes
                     properties:
                       location_id:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       beginning_at:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       ending_at:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       temperature:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       volume:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       name:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
                       email:
-                        type: array
-                        description: Validation rules error messages for attribute
-                        items:
-                          type: string
-                          description: Rule error message
+                        $ref: '#/components/schemas/AttributeErrors'
 components:
   schemas:
     LocationStateData:
@@ -294,4 +246,10 @@ components:
         free_blocks:
           type: integer
           description: Free blocks count in location
-
+    AttributeErrors:
+      type: array
+      title: AttributeErrors
+      description: Validation rules error messages for attribute
+      items:
+        type: string
+        description: Rule error message
