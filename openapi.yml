@@ -21,8 +21,9 @@ paths:
           content:
             application/json:
               schema:
-                title: LocationStateAll
                 type: object
+                title: LocationStateAll
+                description: All locations state data
                 properties:
                   success:
                     type: boolean
@@ -34,20 +35,7 @@ paths:
                     type: array
                     description: Data of locations list
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          description: Location ID
-                        name:
-                          type: string
-                          description: Location name
-                        total_blocks:
-                          type: integer
-                          description: Total blocks count in location
-                        free_blocks:
-                          type: integer
-                          description: Free blocks count in location
+                      $ref: '#/components/schemas/LocationStateData'
   /location/stat-one/{id}:
     get:
       tags:
@@ -67,28 +55,15 @@ paths:
           content:
             application/json:
               schema:
-                title: LocationStateOne
                 type: object
+                title: LocationStateOne
+                description: One location state data
                 properties:
                   success:
                     type: boolean
                     description: True if have location data
                   data:
-                    type: object
-                    description: Data of location
-                    properties:
-                      id:
-                        type: integer
-                        description: Location ID
-                      name:
-                        type: string
-                        description: Location name
-                      total_blocks:
-                        type: integer
-                        description: Total blocks count in location
-                      free_blocks:
-                        type: integer
-                        description: Free blocks count in location
+                    $ref: '#/components/schemas/LocationStateData'
   /order/calc:
     post:
       tags:
@@ -300,3 +275,23 @@ paths:
                         items:
                           type: string
                           description: Rule error message
+components:
+  schemas:
+    LocationStateData:
+      type: object
+      title: LocationStateData
+      description: State data of one location
+      properties:
+        id:
+          type: integer
+          description: Location ID
+        name:
+          type: string
+          description: Location name
+        total_blocks:
+          type: integer
+          description: Total blocks count in location
+        free_blocks:
+          type: integer
+          description: Free blocks count in location
+
