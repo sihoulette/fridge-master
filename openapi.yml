@@ -64,6 +64,17 @@ paths:
                     description: True if have location data
                   data:
                     $ref: '#/components/schemas/LocationStateData'
+        404:
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: NotFound
+                properties:
+                  message:
+                    type: string
+                    description: Not Found
   /order/calc:
     post:
       tags:
@@ -227,12 +238,64 @@ paths:
                         $ref: '#/components/schemas/AttributeErrors'
                       email:
                         $ref: '#/components/schemas/AttributeErrors'
-
+  /login:
+    post:
+      tags:
+        - Authentication
+      description: Login client in application
+      requestBody:
+        description: Form data for login
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: User email
+                password:
+                  type: string
+                  description: User password
+              required:
+                - email
+                - password
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: LoginUser
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: True if success create token
+                  token:
+                    type: string
+                    description: Access token
+        401:
+          description: Unauthorised request
+          content:
+            application/json:
+              schema:
+                title: Unauthorised
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: False if unauthorised
+                  error:
+                    type: string
+                    description: Error message
   /client/booking/list:
     get:
       tags:
         - Client order booking
       description: List of client orders
+      security:
+        - BearerAuth: [client]
       parameters:
         - $ref: '#/components/parameters/QueryOffset'
         - $ref: '#/components/parameters/QueryLimit'
@@ -257,11 +320,27 @@ paths:
                     description: Data of list orders
                     items:
                       $ref: '#/components/schemas/OrderItemClientData'
+        401:
+          description: Unauthorised request
+          content:
+            application/json:
+              schema:
+                title: Unauthorised
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: False if unauthorised
+                  error:
+                    type: string
+                    description: Error message
   /client/booking/show/{id}:
     get:
       tags:
         - Client order booking
       description: Show information of order
+      security:
+        - BearerAuth: [ client ]
       parameters:
         - in: path
           name: id
@@ -284,11 +363,38 @@ paths:
                     description: True if have data
                   data:
                     $ref: '#/components/schemas/OrderItemClientData'
+        401:
+          description: Unauthorised request
+          content:
+            application/json:
+              schema:
+                title: Unauthorised
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: False if unauthorised
+                  error:
+                    type: string
+                    description: Error message
+        404:
+          description: Not found response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: NotFound
+                properties:
+                  message:
+                    type: string
+                    description: Not Found
   /client/booking/сancel/{id}:
     patch:
       tags:
         - Client order booking
       description: Сancel order
+      security:
+        - BearerAuth: [ client ]
       parameters:
         - in: path
           name: id
@@ -309,6 +415,20 @@ paths:
                   success:
                     type: boolean
                     description: True if success operation
+        401:
+          description: Unauthorised request
+          content:
+            application/json:
+              schema:
+                title: Unauthorised
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: False if unauthorised
+                  error:
+                    type: string
+                    description: Error message
 components:
   parameters:
     QueryOffset:
@@ -382,3 +502,8 @@ components:
         total_price:
           type: string
           description: Total price of order
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token to authorize requests.
