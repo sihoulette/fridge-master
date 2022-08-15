@@ -8,6 +8,7 @@ use App\Models\Location\LocationRoom;
 use App\Services\Location\LocationService;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\FigureHelper;
+use App\Tools\RandomCode;
 use Exception;
 
 /**
@@ -76,7 +77,7 @@ class OrderService
     {
         $resp = $this->calc($data);
         if (!empty($resp['uses_blocks'])) {
-            $data['access_code'] = mb_substr(uniqid(), -12);
+            $data['access_code'] = RandomCode::uniqueInTable('order', 'access_code');
             DB::beginTransaction();
             try {
                 Order::create($data);
