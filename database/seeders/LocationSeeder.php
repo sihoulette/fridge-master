@@ -23,21 +23,27 @@ final class LocationSeeder extends Seeder
     static protected array $tableData = [
         [
             'name' => 'Уилмингтон (Северная Каролина)',
+            'timezone' => 'America/New_York',
         ],
         [
             'name' => 'Портленд (Орегон)',
+            'timezone' => 'America/Los_Angeles',
         ],
         [
             'name' => 'Торонто',
+            'timezone' => 'America/Toronto',
         ],
         [
             'name' => 'Варшава',
+            'timezone' => 'Europe/Warsaw',
         ],
         [
             'name' => 'Валенсия',
+            'timezone' => 'Europe/Madrid',
         ],
         [
             'name' => 'Шанхай',
+            'timezone' => 'Asia/Shanghai',
         ]
     ];
 
